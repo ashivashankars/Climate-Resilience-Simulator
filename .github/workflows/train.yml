@@ -25,7 +25,7 @@ env:
   PYTHON_VERSION: "3.11"
   MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI || 'sqlite:///mlflow.db' }}
   ARTIFACT_DIR: ml/artifacts
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   # ──────────────────────────────────────────────
