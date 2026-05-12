@@ -1,1 +1,90 @@
-node_modules
+# ── Secrets & environment variables ──────────────────────────────────────────
+.env
+.env.*
+.env.local
+.env.*.local
+*.secret
+secrets/
+credentials.json
+service_account*.json
+
+# ── Node / JavaScript ─────────────────────────────────────────────────────────
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+*.tsbuildinfo
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+.eggs/
+*.egg-info/
+dist/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── ML model artifacts & binaries ─────────────────────────────────────────────
+ml/artifacts/
+*.pt
+*.pth
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.onnx
+*.bin
+*.safetensors
+*.ckpt
+
+# ── MLflow & experiment tracking ──────────────────────────────────────────────
+mlflow.db
+mlruns/
+mlartifacts/
+ml/artifacts/tensorboard/
+
+# ── Databases ─────────────────────────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/
+*.out
+
+# ── Large data files ──────────────────────────────────────────────────────────
+ml/data/*.csv
+ml/data/*.json
+*.parquet
+*.feather
+*.arrow
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# ── IDE / editor ──────────────────────────────────────────────────────────────
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+.project
+.classpath
+
+# ── OS temp files ─────────────────────────────────────────────────────────────
+*.tmp
+*.temp
