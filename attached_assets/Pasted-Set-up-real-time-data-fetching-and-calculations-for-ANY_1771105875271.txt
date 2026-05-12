@@ -1,0 +1,146 @@
+Set up real-time data fetching and calculations for ANY US location:
+
+CREATE TYPESCRIPT INTERFACES:
+interface Location {
+  name: string;
+  state: string;
+  lat: number;
+  lon: number;
+  elevation: number;
+  climateZone: string;
+  currentTemp: number;
+  avgHighTemp: number;
+  avgLowTemp: number;
+  solarRadiation: number;
+  solarRating: number;
+  baselineFloodRisk: number;
+}
+
+interface Building {
+  id: string;
+  lat: number;
+  lon: number;
+  height: number;
+  interventions: string[];
+  color: string;
+}
+
+interface Metrics {
+  temperatureDelta: number;
+  floodRisk: number;
+  energySavings: number;
+  resilienceScore: number;
+}
+
+CREATE API SERVICE (lib/climateApi.ts):
+
+export async function fetchLocationClimate(lat: number, lon: number) {
+  // Parallel API calls for speed
+  const [weatherData, elevationData, solarData] = await Promise.all([
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=auto`).then(r => r.json()),
+    fetch(`https://api.open-meteo.com/v1/elevation?latitude=${lat}&longitude=${lon}`).then(r => r.json()),
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=shortwave_radiation_sum&forecast_days=7&timezone=auto`).then(r => r.json())
+  ]);
+
+  return {
+    currentTemp: weatherData.current.temperature_2m,
+    avgHigh: weatherData.daily.temperature_2m_max[0],
+    avgLow: weatherData.daily.temperature_2m_min[0],
+    elevation: elevationData.elevation[0],
+    solarRadiation: solarData.daily.shortwave_radiation_sum.reduce((a,b) => a+b) / 7 // weekly average
+  };
+}
+
+export function calculateClimateZone(lat: number): string {
+  if (lat > 45) return "Zone 3-4 (Cold)";
+  if (lat > 40) return "Zone 5-6 (Cool)";
+  if (lat > 35) return "Zone 7-8 (Temperate)";
+  if (lat > 30) return "Zone 9 (Warm)";
+  return "Zone 10-11 (Subtropical)";
+}
+
+export function calculateFloodRisk(elevation: number, lat: number, lon: number): number {
+  let baseRisk = 0;
+  if (elevation < 5) baseRisk = 90;
+  else if (elevation < 10) baseRisk = 70;
+  else if (elevation < 20) baseRisk = 40;
+  else if (elevation < 50) baseRisk = 20;
+  else baseRisk = 8;
+  
+  // Add coastal proximity factor (approximate)
+  const isCoastal = Math.abs(lon) > 100 && Math.abs(lat - 35) < 15; // rough US coast check
+  if (isCoastal && elevation < 20) baseRisk += 15;
+  
+  return Math.min(baseRisk, 100);
+}
+
+export function calculateSolarRating(solarRadiation: number): number {
+  if (solarRadiation > 6000) return 5;
+  if (solarRadiation > 5000) return 4;
+  if (solarRadiation > 4000) return 3;
+  if (solarRadiation > 3000) return 2;
+  return 1;
+}
+
+export function calculateResilienceScore(
+  floodRisk: number,
+  tempDelta: number,
+  solarRating: number,
+  interventions: number
+): number {
+  const baseScore = 100 - (floodRisk * 0.3) - (Math.abs(tempDelta) * 2) + (solarRating * 5);
+  const interventionBonus = interventions * 2; // +2 per intervention
+  return Math.max(0, Math.min(100, baseScore + interventionBonus));
+}
+
+DYNAMIC CALCULATION FUNCTIONS:
+
+calculateMetricsWithInterventions(location: Location, buildings: Building[]): Metrics {
+  // Count interventions
+  const greenRoofCount = buildings.filter(b => b.interventions.includes('greenRoof')).length;
+  const solarCount = buildings.filter(b => b.interventions.includes('solar')).length;
+  const floodWallCount = buildings.filter(b => b.interventions.includes('floodWall')).length;
+  const pavementCount = buildings.filter(b => b.interventions.includes('pavement')).length;
+  
+  // Temperature impact (each green roof reduces temp by 0.5°C)
+  const tempReduction = greenRoofCount * 0.5 + pavementCount * 0.3;
+  const finalTemp = location.currentTemp - tempReduction;
+  const temperatureDelta = finalTemp - 14; // 14°C is US average
+  
+  // Flood risk reduction (each flood wall reduces risk by 5%)
+  const floodReduction = floodWallCount * 5;
+  const floodRisk = Math.max(0, location.baselineFloodRisk - floodReduction);
+  
+  // Energy savings (solar + green roof cooling benefits)
+  const solarEnergy = solarCount * 3; // 3% per panel
+  const coolingReduction = greenRoofCount * 1.5; // 1.5% cooling cost reduction
+  const energySavings = solarEnergy + coolingReduction;
+  
+  // Resilience score
+  const totalInterventions = greenRoofCount + solarCount + floodWallCount + pavementCount;
+  const resilienceScore = calculateResilienceScore(
+    floodRisk,
+    temperatureDelta,
+    location.solarRating,
+    totalInterventions
+  );
+  
+  return { temperatureDelta, floodRisk, energySavings, resilienceScore };
+}
+
+STATE MANAGEMENT:
+- selectedLocation: Location | null (populated from real APIs)
+- buildings: Building[] (generated dynamically based on location)
+- metrics: Metrics (calculated in real-time from location + interventions)
+- isLoadingLocation: boolean (for API fetch states)
+
+WHEN LOCATION CHANGES:
+1. Show loading spinner
+2. Fetch all climate data from APIs
+3. Generate 25-30 buildings with random positions near coordinates
+4. Calculate baseline metrics
+5. Update UI with all real data
+6. Hide loading spinner
+
+This works for ANY US location - no hardcoded data!
+Handle API errors gracefully: if Open-Meteo fails, use approximate formulas based on latitude.

@@ -1,0 +1,47 @@
+Create a Next.js app with TypeScript and Tailwind CSS for a US Neighborhood Climate Resilience Analyzer.
+
+COMPLETE LAYOUT:
+- Dark theme: background #0f172a, cards #1e293b
+- Three columns: Left sidebar (20%), Center map area (55%), Right sidebar (25%)
+
+TOP HEADER BAR:
+- 4 metric cards in a row: "TEMPERATURE Δ", "FLOOD RISK", "ENERGY SAVINGS", "RESILIENCE SCORE"
+- Each shows: label above (small gray text), large cyan number below (#06b6d4)
+- Display "NaN°C", "NaN%", "12%", "NaN" as initial values
+
+LEFT SIDEBAR - "Climate Toolkit":
+- Header with building icon and title
+- 4 intervention cards with dark bg #1e293b, rounded corners:
+  1. 🌿 Green Roofs - "Reduce heat island effect"
+  2. ☀️ Solar Panels - "Generate clean energy"
+  3. 🌊 Flood Walls - "Protect against sea rise"
+  4. 💧 Permeable Pavement - "Manage stormwater"
+- Each card: icon left, title/description right, hover effect with cyan border
+- Below: "Sea Level Rise" slider (0-2m, cyan accent), "Projection Year" slider (2024-2100)
+- Bottom: Building Status legend with colored dots (gray, green, orange, blue)
+- Blue "VIEW STRATEGIES" button at bottom
+
+RIGHT SIDEBAR - "AI Climate Analysis":
+- Header: 🤖 icon + "AI Climate Analysis" + "Powered by MiniMax" subtitle
+- 4 collapsible sections (accordions):
+  1. 🌡️ Urban Heat Island Analysis
+  2. 🌊 Flood Resilience Assessment
+  3. ⚡ Energy Benefits
+  4. 💰 Cost-Benefit Summary
+- Each section: icon, title, expandable content with cyan highlights
+- "Created by MiniMax Agent" badge at bottom
+
+CENTER AREA:
+- Search bar at top: "Search neighborhoods: Santa Clara, Boston, etc." with dark input, cyan focus border
+- Placeholder for map (dark blue rectangle with text "Map loads here")
+- Use Mapbox GL JS integration (I'll provide token)
+
+STYLING:
+- Soft shadows on cards (shadow-lg)
+- Rounded corners (rounded-xl)
+- Cyan accents (#06b6d4) throughout
+- White text (#f1f5f9), gray text (#94a3b8)
+- Smooth transitions (300ms) on all interactions
+- Use Inter font or system font stack
+
+Make it look exactly like a professional climate analysis tool with dark theme.

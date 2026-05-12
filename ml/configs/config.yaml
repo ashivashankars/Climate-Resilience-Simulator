@@ -1,0 +1,63 @@
+# ClimateResilienceNet — Base Training Configuration
+# ──────────────────────────────────────────────────
+# All values can be overridden via CLI flags (see ml/training/train.py)
+# Rationale for each hyperparameter choice is documented inline.
+
+# ── Data ──────────────────────────────────────────
+n_samples:   5000      # Masters project dataset
+seed:        42
+data_dir:    "ml/data"
+output_dir:  "ml/artifacts"
+experiment:  "climate-resilience"
+
+# ── Model Architecture ─────────────────────────────
+# d_model=128 chosen as balance between capacity and training speed.
+# n_heads=8: each head covers d_k=16 dims — sufficient for 36 features.
+# n_layers=4: determined by ablation study (deeper doesn't help > 4 for tabular).
+# d_ff=512: standard 4×d_model expansion ratio.
+d_model:     128
+n_heads:     8
+n_layers:    4
+d_ff:        512
+dropout:     0.10          # Low dropout because tabular data is less prone to memorisation
+use_physics_prior: true    # IPCC zone-based prior injection
+use_attention:     true    # Transformer self-attention
+use_uncertainty:   true    # Aleatoric uncertainty on energy head
+
+# ── Training ──────────────────────────────────────
+epochs:      100
+batch_size:  128           # 5k dataset — 4000 train samples → ~31 batches per epoch
+augment:     true          # Gaussian feature noise (augment_std=0.02)
+
+# ── Optimiser: AdamW ──────────────────────────────
+# AdamW (Loshchilov & Hutter 2019) with decoupled weight decay — preferred
+# over Adam for transformers: avoids L2 regularisation conflating with gradient
+# adaptive scaling.
+lr:            0.0003      # Initial learning rate (3e-4 — standard transformer LR)
+lr_min:        0.000001    # Minimum LR at end of cosine cycle
+weight_decay:  0.0001      # Mild decoupled weight decay
+
+# ── Scheduler: Cosine Annealing with Warm Restarts (SGDR) ─────────────────
+# T_0=10, T_mult=2 means: restart at epochs 10, 30, 70 (10+20+40).
+# Warm restarts help escape local minima caused by the non-convex interaction
+# of the physics prior with the attention mechanism.
+T_0:    10
+T_mult: 2
+
+# ── Regularisation ────────────────────────────────
+grad_clip:   1.0           # Gradient clipping — essential for transformer stability
+
+# ── Early Stopping ────────────────────────────────
+patience:    20            # Stop if val_loss doesn't improve for 20 epochs
+min_delta:   0.0001        # Minimum improvement threshold
+
+# ── Loss Weights ──────────────────────────────────
+# resilience=1.0 (baseline), temp=1.5 (harder to predict, up-weight),
+# flood=1.2 (moderate variance), energy=0.8 (high variance, handled by NLL)
+loss_weights: [1.0, 1.5, 1.2, 0.8]
+monotonicity_weight: 0.05  # Soft physics constraint weight
+physics_weight:      0.02  # Pearson correlation penalty weight
+uncertainty_weight:  0.50  # NLL weight for energy uncertainty head
+
+# ── Ablation-specific ─────────────────────────────
+ablation_epochs: 40        # Shorter training for ablation variants

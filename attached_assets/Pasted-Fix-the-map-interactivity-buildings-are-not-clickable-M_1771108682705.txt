@@ -1,0 +1,182 @@
+Fix the map interactivity - buildings are not clickable. Make the following changes:
+
+PROBLEM: Map and buildings are not responding to clicks.
+
+SOLUTION - Make buildings fully interactive:
+
+1. ADD BUILDING CLICK HANDLERS:
+   - When map loads and user searches a location, generate 25-30 clickable building markers
+   - Each building should be a Mapbox Marker or a clickable map layer
+   - Buildings must have onClick event handlers attached
+
+2. BUILDING GENERATION:
+   When location is selected (after search):
+```javascript
+   // Generate buildings near the searched coordinates
+   const buildings = [];
+   for (let i = 0; i < 25; i++) {
+     const building = {
+       id: `building_${i}`,
+       coordinates: {
+         lat: searchedLat + (Math.random() - 0.5) * 0.01, // Random offset
+         lon: searchedLon + (Math.random() - 0.5) * 0.01
+       },
+       height: Math.random() * 80 + 20, // 20-100m height
+       interventions: [],
+       color: '#64748b' // Default gray
+     };
+     buildings.push(building);
+   }
+```
+
+3. RENDER BUILDINGS AS CLICKABLE ELEMENTS:
+   
+   Option A - Using Mapbox Markers (EASIEST):
+```javascript
+   buildings.forEach(building => {
+     const el = document.createElement('div');
+     el.className = 'building-marker';
+     el.style.backgroundColor = building.color;
+     el.style.width = '20px';
+     el.style.height = '20px';
+     el.style.borderRadius = '4px';
+     el.style.cursor = 'pointer';
+     el.style.border = '2px solid rgba(255,255,255,0.3)';
+     
+     el.addEventListener('click', () => handleBuildingClick(building.id));
+     
+     new mapboxgl.Marker(el)
+       .setLngLat([building.coordinates.lon, building.coordinates.lat])
+       .addTo(map);
+   });
+```
+   
+   Option B - Using Mapbox 3D Fill-Extrusion Layer (MORE IMPRESSIVE):
+```javascript
+   map.addLayer({
+     id: 'buildings-3d',
+     type: 'fill-extrusion',
+     source: {
+       type: 'geojson',
+       data: {
+         type: 'FeatureCollection',
+         features: buildings.map(b => ({
+           type: 'Feature',
+           properties: {
+             id: b.id,
+             height: b.height,
+             color: b.color
+           },
+           geometry: {
+             type: 'Polygon',
+             coordinates: [[
+               [b.coordinates.lon - 0.0001, b.coordinates.lat - 0.0001],
+               [b.coordinates.lon + 0.0001, b.coordinates.lat - 0.0001],
+               [b.coordinates.lon + 0.0001, b.coordinates.lat + 0.0001],
+               [b.coordinates.lon - 0.0001, b.coordinates.lat + 0.0001],
+               [b.coordinates.lon - 0.0001, b.coordinates.lat - 0.0001]
+             ]]
+           }
+         }))
+       }
+     },
+     paint: {
+       'fill-extrusion-color': ['get', 'color'],
+       'fill-extrusion-height': ['get', 'height'],
+       'fill-extrusion-base': 0,
+       'fill-extrusion-opacity': 0.9
+     }
+   });
+   
+   // Add click handler
+   map.on('click', 'buildings-3d', (e) => {
+     const buildingId = e.features[0].properties.id;
+     handleBuildingClick(buildingId);
+   });
+   
+   // Change cursor on hover
+   map.on('mouseenter', 'buildings-3d', () => {
+     map.getCanvas().style.cursor = 'pointer';
+   });
+   map.on('mouseleave', 'buildings-3d', () => {
+     map.getCanvas().style.cursor = '';
+   });
+```
+
+4. HANDLE BUILDING CLICKS:
+```javascript
+   function handleBuildingClick(buildingId) {
+     // Check if an intervention is selected
+     if (!activeIntervention) {
+       alert('Please select an intervention from the Climate Toolkit first');
+       return;
+     }
+     
+     // Find the building
+     const building = buildings.find(b => b.id === buildingId);
+     if (!building) return;
+     
+     // Apply intervention
+     building.interventions.push(activeIntervention);
+     
+     // Update building color based on intervention
+     if (activeIntervention === 'green_roof') {
+       building.color = '#10b981'; // Green
+     } else if (activeIntervention === 'solar_panel') {
+       building.color = '#f59e0b'; // Orange
+     } else if (activeIntervention === 'flood_wall') {
+       building.color = '#3b82f6'; // Blue
+     } else if (activeIntervention === 'permeable_pavement') {
+       building.color = '#06b6d4'; // Cyan
+     }
+     
+     // Update the building on map (re-render with new color)
+     updateBuildingOnMap(buildingId, building.color);
+     
+     // Update metrics
+     updateMetrics();
+     
+     // Show success message
+     showToast('✓ Intervention applied!');
+     
+     // Deselect intervention (or keep selected for multiple applications)
+     // activeIntervention = null;
+   }
+```
+
+5. ADD HOVER EFFECTS:
+   - When cursor hovers over a building, show semi-transparent cyan highlight
+   - Display tooltip with building info: "Building #123 | Current: Standard"
+   - If intervention is selected, show preview: "Click to apply: Green Roof"
+
+6. VISUAL FEEDBACK WHEN INTERVENTION SELECTED:
+   - Change cursor to crosshair: `cursor: crosshair`
+   - Buildings pulse or glow slightly to indicate they're clickable
+   - Show instruction banner: "🎯 Click on buildings to apply intervention"
+
+7. ENSURE MAP INTERACTIONS ARE NOT BLOCKED:
+   - Check z-index of map container
+   - Make sure no overlay divs are blocking clicks
+   - Map container should have: `pointer-events: auto`
+   - Other overlays should have: `pointer-events: none` (except interactive elements)
+
+8. ADD DEBUG MODE:
+   - Console.log when map is clicked: "Map clicked at:", coordinates
+   - Console.log when building is clicked: "Building clicked:", buildingId
+   - This helps verify clicks are being detected
+
+TEST CHECKLIST:
+- [ ] Buildings appear on map after searching location
+- [ ] Clicking intervention card selects it (cyan border appears)
+- [ ] Cursor changes to crosshair when hovering over buildings
+- [ ] Clicking building applies intervention and changes color
+- [ ] Metrics update after intervention applied
+- [ ] Multiple buildings can be clicked
+- [ ] Can apply different interventions to different buildings
+
+If buildings still don't appear, start simple:
+- Just render 5 colored circles as Mapbox markers
+- Make sure they're clickable with console.log
+- Then add complexity (3D buildings, colors, etc.)
+
+PRIORITY: Get basic click detection working first, polish later!

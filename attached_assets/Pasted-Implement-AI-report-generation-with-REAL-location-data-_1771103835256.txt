@@ -1,0 +1,69 @@
+Implement AI report generation with REAL location data:
+
+Add "Generate AI Analysis" button at top of right sidebar:
+- Gradient cyan-to-blue background
+- Sparkles icon (✨)
+- Pulse animation
+
+WHEN CLICKED:
+1. Button shows loading state: "Analyzing..." with spinner
+2. Show progress messages (change every 1 second):
+   - "Analyzing climate data..."
+   - "Calculating projections..."
+   - "Generating recommendations..."
+3. After 3 seconds, populate all 4 sections with REAL DATA
+
+DYNAMIC CONTENT using actual location data:
+
+🌡️ Urban Heat Island Analysis:
+"With {projection year from slider} projection and {sea level from slider}m sea level rise, {location.name}, {location.state} faces {tempDelta > 3 ? 'significant' : 'moderate'} heat challenges. Current temperature: {currentTemp}°C (Climate Zone: {climateZone}). 
+
+{greenRoofCount > 0 ? `${greenRoofCount} green roof installations reduce urban temperature by ${greenRoofCount * 0.5}°C.` : 'No green infrastructure currently implemented - temperature reduction opportunity available.'} 
+
+Heat vulnerability: {tempDelta > 5 ? 'HIGH' : tempDelta > 2 ? 'MODERATE' : 'LOW'} based on current conditions."
+
+🌊 Flood Resilience Assessment:
+"Current elevation: {elevation}m above sea level. Baseline flood risk: {baselineFloodRisk}%. 
+
+{floodWallCount > 0 ? `${floodWallCount} flood protection systems installed, reducing risk to ${currentFloodRisk}% (${baselineFloodRisk - currentFloodRisk}% improvement).` : `Without flood protection, ${location.name} has ${baselineFloodRisk > 60 ? 'HIGH' : baselineFloodRisk > 30 ? 'MODERATE' : 'LOW'} exposure.`}
+
+Each meter of sea level rise increases flood exposure by approximately 25% for coastal areas. 
+
+Recommendation: {elevation < 10 ? 'Immediate flood barrier implementation critical' : elevation < 20 ? 'Proactive flood protection recommended' : 'Standard drainage systems sufficient'}."
+
+⚡ Energy Benefits:
+"Solar potential for {location.name}: {solarRating} stars (based on {solarRadiation.toFixed(0)} Wh/m² daily radiation)
+
+Current Status:
+- {solarCount > 0 ? `${solarCount} solar panel installations generating ~${solarCount * 3}% of district energy` : 'No solar generation - opportunity for 15-25% grid reduction'}
+- {greenRoofCount > 0 ? `${greenRoofCount} green roofs reducing cooling costs by ~${greenRoofCount * 1.5}%` : 'Cooling cost reduction opportunity: 10-20% with green roofs'}
+- Combined current savings: {energySavings.toFixed(1)}%
+
+{solarRating >= 4 ? 'Excellent solar conditions - prioritize PV installation' : solarRating >= 3 ? 'Good solar potential for distributed generation' : 'Moderate solar - supplement with other renewables'}
+
+Annual cost avoidance: $${(energySavings * 500).toFixed(0)} per building."
+
+💰 Cost-Benefit Summary:
+"Total interventions: {totalInterventions}
+District investment: $${totalInterventions * 50}K
+
+Breakdown by intervention type:
+{greenRoofCount > 0 ? `• ${greenRoofCount} Green Roofs: $${greenRoofCount * 175}K | ROI: 5-8 years | Annual savings: $${greenRoofCount * 8}K` : ''}
+{solarCount > 0 ? `• ${solarCount} Solar Arrays: $${solarCount * 85}K | ROI: 6-10 years | Annual savings: $${solarCount * 12}K` : ''}
+{floodWallCount > 0 ? `• ${floodWallCount} Flood Systems: $${floodWallCount * 200}K | Damage prevention value: $${floodWallCount * 500}K over 20 years` : ''}
+{pavementCount > 0 ? `• ${pavementCount} Cool Pavement: $${pavementCount * 25}K | Urban heat reduction benefit` : ''}
+
+Projected annual savings: $${(totalInterventions * 10)}K
+Payback period: {(totalInterventions * 50) / (totalInterventions * 10)} years
+Climate resilience score: {resilienceScore}/100 ({resilienceScore > 75 ? 'EXCELLENT' : resilienceScore > 50 ? 'GOOD' : 'NEEDS IMPROVEMENT'})"
+
+Format with:
+- Cyan highlights for all numbers
+- Bold for key findings
+- Proper paragraph spacing
+- Smooth fade-in animation for each section
+- Use actual calculated values throughout
+
+If no interventions applied yet:
+- Show baseline analysis with recommendations
+- Emphasize opportunities rather than current state

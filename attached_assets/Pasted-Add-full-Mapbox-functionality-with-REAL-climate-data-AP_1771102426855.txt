@@ -1,0 +1,83 @@
+Add full Mapbox functionality with REAL climate data APIs:
+
+Install: npm install react-map-gl mapbox-gl axios
+
+MAPBOX SETUP:
+- Use react-map-gl with mapbox://styles/mapbox/dark-v11 style
+- Show entire continental US on initial load (center: [-98.5795, 39.8283], zoom: 3.5)
+- Map takes full height of center column with rounded corners
+- Access token from environment variable: process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+
+REAL LOCATION SEARCH using Mapbox Geocoding API:
+- Endpoint: https://api.mapbox.com/geocoding/v5/mapbox.places/{query}.json?access_token={token}&country=US&types=place,locality,neighborhood
+- When user types and presses Enter:
+  1. Fetch coordinates, place name, and context (state, county)
+  2. Zoom map to location (zoom level 12) with smooth animation
+  3. Add glowing cyan marker at exact coordinates
+
+FETCH REAL CLIMATE DATA from Open-Meteo API (FREE, no auth needed):
+When location is selected, make these API calls:
+
+1. Weather/Climate Data:
+   Endpoint: https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min&timezone=auto
+
+2. Elevation Data (for flood risk):
+   Endpoint: https://api.open-meteo.com/v1/elevation?latitude={lat}&longitude={lon}
+
+3. Solar Radiation (for solar rating):
+   Endpoint: https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=shortwave_radiation_sum&timezone=auto
+
+CALCULATE REAL METRICS from API responses:
+
+Temperature Δ:
+- Use current temperature from Open-Meteo
+- Calculate deviation from US average (14°C)
+- Display: `${(temp - 14).toFixed(1)}°C` (positive or negative)
+
+Flood Risk:
+- Use elevation data
+- Formula: 
+  * elevation < 5m: "Critical 85-95%"
+  * elevation 5-10m: "High 65-75%"
+  * elevation 10-20m: "Moderate 35-45%"
+  * elevation 20-50m: "Low 15-25%"
+  * elevation > 50m: "Very Low 5-10%"
+- Also factor in proximity to coastline using Mapbox API context
+
+Solar Rating:
+- Use shortwave_radiation_sum from Open-Meteo
+- Convert to 1-5 star rating:
+  * > 6000 Wh/m²: ★★★★★ (Excellent)
+  * 5000-6000: ★★★★☆ (Very Good)
+  * 4000-5000: ★★★☆☆ (Good)
+  * 3000-4000: ★★☆☆☆ (Fair)
+  * < 3000: ★☆☆☆☆ (Poor)
+
+Climate Zone (Real USDA Hardiness Zones):
+- Use latitude to estimate:
+  * lat > 45°N: "Zone 3-4 (Cold)"
+  * lat 40-45°N: "Zone 5-6 (Cool)"
+  * lat 35-40°N: "Zone 7-8 (Temperate)"
+  * lat 30-35°N: "Zone 9 (Warm)"
+  * lat < 30°N: "Zone 10-11 (Subtropical/Tropical)"
+
+Energy Savings Baseline:
+- Calculate from solar radiation: `${(radiation / 100).toFixed(0)}%`
+- This represents potential solar energy generation
+
+Resilience Score Baseline:
+- Formula: 100 - (floodRisk * 0.3) - (abs(tempDeviation) * 2) + (solarRating * 5)
+- Clamp between 0-100
+
+Show loading spinner while fetching all this data (takes 1-2 seconds).
+Display error message if any API fails and show fallback values.
+
+INFO OVERLAY on map shows all real data:
+- Location name from Mapbox
+- Exact coordinates (lat, lon) to 2 decimal places
+- Climate Zone (calculated)
+- Solar Rating (stars based on real radiation data)
+- Flood Risk (color-coded badge based on real elevation)
+- Current Temperature (from Open-Meteo)
+
+Cache API responses for 1 hour to avoid rate limiting.
