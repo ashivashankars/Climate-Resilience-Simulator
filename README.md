@@ -20,10 +20,9 @@ ClimateProof trains **ClimateResilienceNet**, a physics-informed transformer mod
 
 | Member | Role | Contributions |
 |---|---|---|
-| **Member 1** | ML Engineer | ClimateResilienceNet architecture, training loop, MLflow/TensorBoard integration, custom loss design |
-| **Member 2** | Data Engineer | Physics-informed dataset generator (IPCC AR6 equations), feature engineering pipeline, RobustScaler preprocessing |
-| **Member 3** | Research Lead | IPCC AR6 literature review, ablation study design, evaluation metrics framework, model design documentation |
-| **Member 4** | Full-Stack Engineer | React/Mapbox dashboard, FastAPI inference server, GitHub Actions CI/CD pipeline, Gradio demo |
+| **Akshata Madavi** | ML Engineer + Full-Stack Engineer| ClimateResilienceNet architecture, training loop, MLflow/TensorBoard integration, custom loss design, React/Mapbox dashboard |
+| **Archana Shivashankar** | Data Engineer + Full-Stack Engineer | Physics-informed dataset generator (IPCC AR6 equations), feature engineering pipeline, RobustScaler preprocessing, FastAPI inference server |
+| **Parth Maradia** | Research Lead + Full-Stack Engineer | IPCC AR6 literature review, ablation study design, evaluation metrics framework, model design documentation, GitHub Actions CI/CD pipeline |
 
 ---
 
