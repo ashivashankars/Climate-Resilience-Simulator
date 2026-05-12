@@ -254,19 +254,19 @@ jobs:
           api.upload_file(
               path_or_fileobj='${{ env.ARTIFACT_DIR }}/best_model.pt',
               path_in_repo='best_model.pt',
-              repo_id='climate-resilience-net',
+              repo_id='Archie9/climate-resilience-net',
               repo_type='model',
               token=token,
           )
           api.upload_file(
               path_or_fileobj='${{ env.ARTIFACT_DIR }}/preprocessor.joblib',
               path_in_repo='preprocessor.joblib',
-              repo_id='climate-resilience-net',
+              repo_id='Archie9/climate-resilience-net',
               repo_type='model',
               token=token,
           )
           print('✅ Model pushed to HuggingFace Hub')
-          " || echo "HuggingFace push skipped (no token or repo not configured)"
+          "
 
       - name: Notify deployment
         run: |
