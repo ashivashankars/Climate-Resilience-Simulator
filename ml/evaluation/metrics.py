@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict
 
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score

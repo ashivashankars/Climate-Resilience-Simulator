@@ -14,7 +14,6 @@ MLOps integration
 from __future__ import annotations
 
 import json
-import os
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -335,7 +334,7 @@ class Trainer:
                 json.dump(self.config, f, indent=2)
             mlflow.log_artifact(str(cfg_path))
 
-            print(f"\nBest val metrics:")
+            print("\nBest val metrics:")
             for k, v in (best_val_metrics or val_metrics).items():
                 print(f"  {k}: {v:.4f}")
 

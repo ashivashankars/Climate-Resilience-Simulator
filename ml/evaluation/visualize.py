@@ -8,14 +8,10 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, List, Optional
-
 import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
 import numpy as np
 import pandas as pd
-import seaborn as sns
 
 matplotlib.use("Agg")  # Non-interactive backend for server-side rendering
 
@@ -45,9 +41,12 @@ def _style_ax(ax, title: str = "", xlabel: str = "", ylabel: str = ""):
     ax.title.set_color(TEXT)
     for spine in ax.spines.values():
         spine.set_edgecolor(CARD_BG)
-    if title:   ax.set_title(title, fontsize=11, fontweight="bold", pad=8)
-    if xlabel:  ax.set_xlabel(xlabel)
-    if ylabel:  ax.set_ylabel(ylabel)
+    if title:
+        ax.set_title(title, fontsize=11, fontweight="bold", pad=8)
+    if xlabel:
+        ax.set_xlabel(xlabel)
+    if ylabel:
+        ax.set_ylabel(ylabel)
     ax.grid(True, color=DARK_BG, linewidth=0.6, alpha=0.8)
 
 
@@ -137,8 +136,7 @@ def plot_predictions(npz_path: str, output_dir: str) -> str:
 def plot_ablation(ablation_csv: str, output_dir: str) -> str:
     df = pd.read_csv(ablation_csv, index_col="variant")
 
-    names    = ["resilience", "temp", "flood", "energy"]
-    r2_cols  = [f"r2_{n}" for n in names]
+    names = ["resilience", "temp", "flood", "energy"]
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 5), facecolor=DARK_BG)
     fig.suptitle("Ablation Study — Component Contribution", color=TEXT,
@@ -198,7 +196,7 @@ def plot_attention_heatmap(attn_maps: list, feature_names: list,
     sorted_vals = attn_vals[order]
 
     fig, ax = plt.subplots(figsize=(10, 6), facecolor=DARK_BG)
-    bars = ax.barh(sorted_lbls[::-1], sorted_vals[::-1], color=ACCENT, alpha=0.85)
+    ax.barh(sorted_lbls[::-1], sorted_vals[::-1], color=ACCENT, alpha=0.85)
     _style_ax(ax, "Feature Importance (CLS Attention, Last Layer)",
               "Mean Attention Weight", "Feature")
     plt.tight_layout()

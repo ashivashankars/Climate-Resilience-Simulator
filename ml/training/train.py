@@ -122,7 +122,7 @@ def run_training(cfg: Dict) -> Dict:
     X_tr, X_val, X_te, y_tr, y_val, y_te = pre.fit_transform_splits(df_X, df_y)
     pre.save(f"{cfg['output_dir']}/preprocessor.joblib")
 
-    print(f"\nDataset splits:")
+    print("\nDataset splits:")
     print(f"  Train : {X_tr.shape[0]:,}")
     print(f"  Val   : {X_val.shape[0]:,}")
     print(f"  Test  : {X_te.shape[0]:,}")
@@ -260,15 +260,24 @@ if __name__ == "__main__":
     cfg  = load_config(args.config)
 
     # CLI overrides
-    if args.epochs:    cfg["epochs"]    = args.epochs
-    if args.lr:        cfg["lr"]        = args.lr
-    if args.d_model:   cfg["d_model"]   = args.d_model
-    if args.n_layers:  cfg["n_layers"]  = args.n_layers
-    if args.batch_size: cfg["batch_size"] = args.batch_size
-    if args.dropout:   cfg["dropout"]   = args.dropout
-    if args.no_physics_prior: cfg["use_physics_prior"] = False
-    if args.no_attention:     cfg["use_attention"]     = False
-    if args.output_dir:       cfg["output_dir"]        = args.output_dir
+    if args.epochs:
+        cfg["epochs"] = args.epochs
+    if args.lr:
+        cfg["lr"] = args.lr
+    if args.d_model:
+        cfg["d_model"] = args.d_model
+    if args.n_layers:
+        cfg["n_layers"] = args.n_layers
+    if args.batch_size:
+        cfg["batch_size"] = args.batch_size
+    if args.dropout:
+        cfg["dropout"] = args.dropout
+    if args.no_physics_prior:
+        cfg["use_physics_prior"] = False
+    if args.no_attention:
+        cfg["use_attention"] = False
+    if args.output_dir:
+        cfg["output_dir"] = args.output_dir
 
     os.makedirs(cfg["output_dir"], exist_ok=True)
 

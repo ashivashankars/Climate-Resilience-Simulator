@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-from pathlib import Path
 from typing import Dict, List, Tuple
 
 import numpy as np
@@ -148,10 +147,9 @@ def compute_labels(city: Dict, year: int, interventions: Dict,
       - EPA Urban Heat Island Program
       - DOE Building Energy Efficiency Frontiers
     """
-    lat, lon = city["lat"], city["lon"]
+    lat = city["lat"]
     zone = get_climate_zone(lat)
     zmult = ZONE_MULTIPLIERS[zone]
-    base_temp_delta_c = IPCC_TEMP_DELTA[year] * zmult["temp"]
 
     coast = city["coast"]
     elev = city["elev"]
@@ -160,8 +158,6 @@ def compute_labels(city: Dict, year: int, interventions: Dict,
     baseline_temp = city["temp"]
 
     # Flood risk baseline increase (%)
-    base_heat_days = {2030: 12, 2040: 20, 2050: 28, 2060: 36,
-                      2070: 45, 2080: 54, 2090: 60, 2100: 65}[year]
     base_flood_increase = {2030: 15, 2040: 25, 2050: 35, 2060: 48,
                            2070: 60, 2080: 72, 2090: 82, 2100: 90}[year]
     flood_base = base_flood_increase * zmult["flood"] * max(0.5, 2.0 - coast / 500)

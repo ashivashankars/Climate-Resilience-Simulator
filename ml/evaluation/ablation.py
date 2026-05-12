@@ -23,15 +23,13 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional
 
-import mlflow
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import DataLoader
 
 from ml.data.dataset import build_dataloaders
 from ml.data.preprocessor import ClimatePreprocessor
-from ml.evaluation.metrics import compute_metrics, metrics_table, TARGET_NAMES
+from ml.evaluation.metrics import compute_metrics, TARGET_NAMES
 from ml.models.baselines import LinearBaseline, RandomForestBaseline
 from ml.models.climate_net import build_model_variant
 from ml.models.losses import ClimateAwareLoss

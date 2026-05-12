@@ -7,7 +7,6 @@ accepts raw location/intervention inputs and returns human-readable predictions.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -15,8 +14,8 @@ import numpy as np
 import torch
 
 from ml.data.generate_dataset import (
-    CITIES, BUILDING_TYPES, PROJECTION_YEARS,
-    build_feature_row, get_climate_zone,
+    CITIES, PROJECTION_YEARS,
+    build_feature_row,
 )
 from ml.data.preprocessor import ClimatePreprocessor
 from ml.models.climate_net import ClimateResilienceNet

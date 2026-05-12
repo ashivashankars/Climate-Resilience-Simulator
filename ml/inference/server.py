@@ -15,7 +15,7 @@ GET  /model/info      — architecture + parameter count
 from __future__ import annotations
 
 import os
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware

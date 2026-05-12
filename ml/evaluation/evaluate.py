@@ -12,7 +12,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 
 from ml.data.preprocessor import ClimatePreprocessor
-from ml.evaluation.metrics import compute_metrics, metrics_table, TARGET_NAMES
+from ml.evaluation.metrics import compute_metrics, metrics_table
 
 
 def evaluate_model(

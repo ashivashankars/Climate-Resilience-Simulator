@@ -7,8 +7,6 @@ and can be serialised with joblib.
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
 from typing import List, Optional, Tuple
 
 import joblib

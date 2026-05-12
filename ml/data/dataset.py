@@ -6,7 +6,7 @@ from typing import Tuple
 
 import numpy as np
 import torch
-from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
+from torch.utils.data import Dataset, DataLoader
 
 
 class ClimateDataset(Dataset):
