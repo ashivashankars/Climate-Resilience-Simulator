@@ -11,9 +11,21 @@
 
 ---
 
+![ClimateProof Interactive Dashboard (ML Enabled)](./attached_assets/dashboard_ml.png)
+
 ## Abstract
 
 ClimateProof trains **ClimateResilienceNet**, a physics-informed transformer model (~520k parameters) that predicts four climate adaptation outcomes simultaneously given location features, IPCC climate projections, and building intervention choices. The end-to-end pipeline covers data generation → training → evaluation → ablation study → hyperparameter sweep → CI/CD → production inference API → interactive web dashboard.
+
+---
+
+## Project Deliverables
+This repository contains all requirements for the final CMPE258 MLOps project:
+* **[Presentation Slide Deck](./deliverables/slide_deck.md)**
+* **[Video Presentation Script](./deliverables/presentation_script.md)**
+* **[Extensive Project Report](./deliverables/project_report.md)**
+* **[Dashboard Screenshot](./attached_assets/dashboard_ml.png)**
+* **Github Repository**: `https://github.com/ashivashankars/Climate-Resilience-Simulator`
 
 ---
 
