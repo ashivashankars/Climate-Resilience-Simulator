@@ -11,7 +11,7 @@
 
 ---
 
-![ClimateProof Interactive Dashboard (ML Enabled)](./attached_assets/dashboard_ml.png)
+![ClimateProof Interactive Dashboard (ML Enabled)](./deliverables/dashboard.png)
 
 ## Abstract
 
@@ -21,10 +21,10 @@ ClimateProof trains **ClimateResilienceNet**, a physics-informed transformer mod
 
 ## Project Deliverables
 This repository contains all requirements for the final CMPE258 MLOps project:
-* **[Presentation Slide Deck](./deliverables/slide_deck.md)**
+* **[Presentation Slide Deck](https://docs.google.com/presentation/d/1CWWcMn6BjBnWuojv5HWduljCyAKZ1enXi9IBd78w3Jw/edit?usp=sharing)**
 * **[Video Presentation Script](./deliverables/presentation_script.md)**
-* **[Extensive Project Report](./deliverables/project_report.md)**
-* **[Dashboard Screenshot](./attached_assets/dashboard_ml.png)**
+* **[Project Report](ProjectReport.pdf)**
+* **[MLFlow](./deliverables/mlflow_ui.png)**
 * **Github Repository**: `https://github.com/ashivashankars/Climate-Resilience-Simulator`
 
 ---
