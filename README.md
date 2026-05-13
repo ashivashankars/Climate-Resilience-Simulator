@@ -295,10 +295,4 @@ Climate-Resilience-Simulator/
 
 ---
 
-## License
-
-MIT — see [LICENSE](LICENSE)
-
----
-
 *ClimateProof Team | CMPE258 Final Project | San Jose State University*
