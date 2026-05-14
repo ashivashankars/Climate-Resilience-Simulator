@@ -43,17 +43,17 @@ This repository contains all requirements for the final CMPE258 MLOps project:
 
 Every component was written from scratch for this project:
 
-| Component | Description | Lines |
-|---|---|---|
-| `ml/models/climate_net.py` | TabTransformer + physics prior + uncertainty estimation | ~370 |
-| `ml/data/generate_dataset.py` | IPCC AR6 physics-informed data generator | ~220 |
-| `ml/models/losses.py` | ClimateAwareLoss: MSE + monotonicity + NLL + physics constraint | ~120 |
-| `ml/training/trainer.py` | Training loop: MLflow + TensorBoard + early stopping + SGDR | ~190 |
-| `ml/evaluation/ablation.py` | 8-variant ablation study framework | ~130 |
-| `ml/evaluation/visualize.py` | 6 custom dark-theme visualization functions | ~220 |
-| `ml/inference/server.py` | FastAPI inference microservice with graceful fallback | ~80 |
-| `.github/workflows/train.yml` | 4-job CI/CD: test → train → visualize → deploy | ~160 |
-| `climateproof_final.ipynb` | 14-step end-to-end training notebook | ~700 |
+| Component | Description |
+|---|---|
+| `ml/models/climate_net.py` | TabTransformer + physics prior + uncertainty estimation |
+| `ml/data/generate_dataset.py` | IPCC AR6 physics-informed data generator|
+| `ml/models/losses.py` | ClimateAwareLoss: MSE + monotonicity + NLL + physics constraint |
+| `ml/training/trainer.py` | Training loop: MLflow + TensorBoard + early stopping + SGDR |
+| `ml/evaluation/ablation.py` | 8-variant ablation study framework | 
+| `ml/evaluation/visualize.py` | 6 custom dark-theme visualization functions | 
+| `ml/inference/server.py` | FastAPI inference microservice with graceful fallback |
+| `.github/workflows/train.yml` | 4-job CI/CD: test → train → visualize → deploy | 
+| `climateproof_final.ipynb` | 14-step end-to-end training notebook | 
 
 ---
 
