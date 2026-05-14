@@ -21,7 +21,7 @@ ClimateProof trains **ClimateResilienceNet**, a physics-informed transformer mod
 
 ## Project Deliverables
 This repository contains all requirements for the final CMPE258 MLOps project:
-* **[Presentation Slide Deck](https://docs.google.com/presentation/d/1CWWcMn6BjBnWuojv5HWduljCyAKZ1enXi9IBd78w3Jw/edit?usp=sharing)**
+* **[Presentation Slide Deck](https://docs.google.com/presentation/d/1tkc0CY4KlLjMG0zLzCmk3mU_RgyBdlBxlG7mTIMyqe4/edit?slide=id.g3e1bf6dbd4e_2_2#slide=id.g3e1bf6dbd4e_2_2)**
 * **[Video Presentation Script](./deliverables/presentation_script.md)**
 * **[Project Report](ProjectReport.pdf)**
 * **[MLFlow](./deliverables/mlflow_ui.png)**
