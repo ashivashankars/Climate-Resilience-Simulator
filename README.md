@@ -119,7 +119,7 @@ Gaussian noise (σ = 3% of label value) simulates real-world measurement uncerta
 
 | Property | Value |
 |---|---|
-| Total samples | 50,000 |
+| Total samples | 5,000 |
 | Input features | 36 |
 | Output targets | 4 |
 | Global cities | 40 |
